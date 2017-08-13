@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>wings</title>
+  <title>从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包 | wings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
+  <meta name="description" content="直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。 我自己学习前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="wings">
+<meta property="og:title" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包">
 <meta property="og:url" content="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/index.html">
 <meta property="og:site_name" content="wings">
-<meta property="og:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
+<meta property="og:description" content="直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。 我自己学习前端">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fiihtmzuykj30e30dxtao.jpg">
-<meta property="og:updated_time" content="2017-08-13T15:04:20.000Z">
+<meta property="og:updated_time" content="2017-08-13T15:18:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wings">
-<meta name="twitter:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
+<meta name="twitter:title" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包">
+<meta name="twitter:description" content="直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。 我自己学习前端">
 <meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fiihtmzuykj30e30dxtao.jpg">
   
     <link rel="alternate" href="/atom.xml" title="wings" type="application/atom+xml">
@@ -75,10 +75,19 @@
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<h2 id="从setTimout-fn-0-这段代码浅谈异步、作用域、闭包"><a href="#从setTimout-fn-0-这段代码浅谈异步、作用域、闭包" class="headerlink" title="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包"></a>从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</h2><p>直接拿主题镇楼吧：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <p>直接拿主题镇楼吧：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>输出结果：3 3 3</p>
 <p>一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。</p>
 <p>我自己学习前端的路我觉得是坎坷曲折的，等我有学到小有成绩的一天我再上来总结一下，但是也正是因为这个不同于常人的学习过程让我从另一个角度对这段代码有了更深入的了解。接下来让我细细说说，第一次写自己的理解，不到位的地方还请各位提点指正一下。</p>
@@ -159,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6avb0he0000kz06bv8fvhla" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6avlfzn0001zb06qbrd99pc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -208,7 +217,7 @@
       <ul>
         
           <li>
-            <a href="/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/">(no title)</a>
+            <a href="/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/">从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</a>
           </li>
         
           <li>
