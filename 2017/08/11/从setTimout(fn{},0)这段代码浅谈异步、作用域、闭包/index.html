@@ -5,17 +5,17 @@
   
   <title>wings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧： for (var i = 0; i &amp;lt; 3; i++) {   setTimeout(function() {       console.log(i);   }, 0); } 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明">
+  <meta name="description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
 <meta property="og:type" content="article">
 <meta property="og:title" content="wings">
 <meta property="og:url" content="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/index.html">
 <meta property="og:site_name" content="wings">
-<meta property="og:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧： for (var i = 0; i &amp;lt; 3; i++) {   setTimeout(function() {       console.log(i);   }, 0); } 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明">
+<meta property="og:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
 <meta property="og:image" content="http://yoursite.com/2017/08/11/从setTimout(fn%7B%7D,0)这段代码浅谈异步、作用域、闭包/作用域.jpg">
-<meta property="og:updated_time" content="2017-08-13T14:48:11.000Z">
+<meta property="og:updated_time" content="2017-08-13T14:56:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="wings">
-<meta name="twitter:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧： for (var i = 0; i &amp;lt; 3; i++) {   setTimeout(function() {       console.log(i);   }, 0); } 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明">
+<meta name="twitter:description" content="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包直接拿主题镇楼吧：12345for (var i = 0; i &amp;lt; 3; i++) &amp;#123;  setTimeout(function() &amp;#123;      console.log(i);  &amp;#125;, 0);&amp;#125; 输出结果：3 3 3 一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输">
 <meta name="twitter:image" content="http://yoursite.com/2017/08/11/从setTimout(fn%7B%7D,0)这段代码浅谈异步、作用域、闭包/作用域.jpg">
   
     <link rel="alternate" href="/atom.xml" title="wings" type="application/atom+xml">
@@ -54,9 +54,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -77,13 +77,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="从setTimout-fn-0-这段代码浅谈异步、作用域、闭包"><a href="#从setTimout-fn-0-这段代码浅谈异步、作用域、闭包" class="headerlink" title="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包"></a>从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</h1><p>直接拿主题镇楼吧：</p>
-<pre><code>for (var i = 0; i &lt; 3; i++) {
-  setTimeout(function() {
-      console.log(i);
-  }, 0);
-}
-</code></pre><p>输出结果：3 3 3</p>
+        <hr>
+<h2 id="从setTimout-fn-0-这段代码浅谈异步、作用域、闭包"><a href="#从setTimout-fn-0-这段代码浅谈异步、作用域、闭包" class="headerlink" title="从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包"></a>从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</h2><p>直接拿主题镇楼吧：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出结果：3 3 3</p>
 <p>一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。</p>
 <p>我自己学习前端的路我觉得是坎坷曲折的，等我有学到小有成绩的一天我再上来总结一下，但是也正是因为这个不同于常人的学习过程让我从另一个角度对这段代码有了更深入的了解。接下来让我细细说说，第一次写自己的理解，不到位的地方还请各位提点指正一下。</p>
 <h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>这本来是一段非常经典的讲闭包的代码，但是我现在看到这段代码第一反应是异步。先不管输出结果如何，如果看到这段代码觉得是i每变化一次，setTimeout方法里的console.log(i)会调用一次的同学，我觉得接下来说的这部分很有必要看一看。</p>
@@ -163,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6auix2s0000h50666ec2nab" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6auu39h0000xk06wfmyhuft" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -174,7 +170,7 @@
   
   
     <a href="/2017/08/06/hello-blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title"></div>
     </a>
   
@@ -207,7 +203,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -236,7 +232,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 wangying language:zh-Hans<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
