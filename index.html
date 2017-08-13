@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -120,7 +120,7 @@
 <h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>首先要明白javascript没有块级作用域，虽然说作用域中的值是在函数运行过程中确定的，但是作用域是在函数定义的时候就已经确定了。</p>
 <p>比如在我们这个例子中，抛开函数运行过程中i的值变化情况来看，setTimeout方法中的console.log(i)的i，要取哪里的i值？这就涉及到了作用域链的问题。所谓作用域链，就是如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</p>
 <p>当然在我们这个例子中的没有其他变量i的干扰好像一眼就看明白了，但是我觉得先说清楚这一点对接下来说到闭包取值有用。所以接下来我先举个例子让大家感受一下作用域链的作用过程。    </p>
-<p><img src="作用域.jpg" alt=""></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fiihtmzuykj30e30dxtao.jpg" alt=""></p>
 <p>按照之前说的，<strong>如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</strong>所以上面的图相信大家都能看懂。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>现在看上面的代码，setTimeout方法中的console.log(i)。</p>
@@ -155,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6auu39h0000xk06wfmyhuft" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6avb0he0000kz06bv8fvhla" class="article-share-link">Share</a>
       
       
     </footer>
@@ -182,7 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/06/hello-blog/" data-id="cj6auu39x0001xk06ny1tzp42" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/08/06/hello-blog/" data-id="cj6avb0ho0001kz06k9zjlgtu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/06/hello-world/" data-id="cj6auu3a50002xk06ldy3myo3" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/08/06/hello-world/" data-id="cj6avb0ib0002kz06oq9ply93" class="article-share-link">Share</a>
       
       
     </footer>
@@ -262,7 +262,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -291,7 +291,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 wangying language:zh-Hans<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
