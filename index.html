@@ -61,6 +61,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript中object的函数变量的作用域问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/03/javascript中object的函数变量的作用域问题/" class="article-date">
+  <time datetime="2017-11-03T09:38:02.000Z" itemprop="datePublished">2017-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/03/javascript中object的函数变量的作用域问题/">javascript中object的函数变量的作用域问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>​    </p>
+<p>​    每当自己觉得对js的this、作用域什么的有了进一步理解的时候，都会及时地被打击哈哈哈，不过也好，一直学习，一直进步。</p>
+<p>​    今天下午无聊看了一题，不外乎就是看一段代码问输出的this是谁，题目本身不难，但是看完后对这段代码瞎倒腾了一番，就输出了一些在意料之外的结果，然后仔细研究了一番，竟然查漏补缺了作用域的一个知识点。</p>
+<p>​    上个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">person = &#123;</div><div class="line">  name = &apos;wangying&apos;,</div><div class="line">  returnName() &#123;</div><div class="line">    return name</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">console.log(person.returnName())</div></pre></td></tr></table></figure>
+<p>​    这段代码会输出什么呢？</p>
+<p>​    答案是，并不会输出什么，而且这里会报一个ReferenceError，因为在这段代码中name是未定义的。</p>
+<p>​    若想要输出’wangying’，应该把return所在的那句改成 return this.name。</p>
+<p>​    由此就牵引出一个问题，name到底是个属性，还是变量。</p>
+<p>​    根据最后一行代码中，调用person.returnName()时，根据js的作用域链机制，returnName()并没有在函数体内找到name这个变量，就会到创建该函数的作用域内继续寻找该变量。那问题的关键就来了，returnName()这个函数是在哪个作用域中被创建的呢？</p>
+<p>​    <strong>重点：js只有全局作用域和函数作用域，没有块作用域。</strong></p>
+<p>​    如果将上面那段代码换种写法应该会好理解一些：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">person = new Object()</div><div class="line">person.name = &apos;wangying&apos;</div><div class="line">person.returnName() &#123;</div><div class="line">  return name</div><div class="line">&#125;</div><div class="line">console.log(obj.returnName())</div></pre></td></tr></table></figure>
+<p>​    从上面可以很容易看出，returnName()函数其实就是person对象的一个属性，它实在全局作用域中创建的。所以returnName()函数会在全局作用域中继续查找一个在全局作用域中创建的name变量，然而全局中并没有一个叫做name的变量，那个跟它长得很像的person.name中的name，并不是一个单独的变量，它只是person中的一个属性，要访问它只能通过person.name。</p>
+<p>​    所以，这段代码当然输出的是undefine。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/03/javascript中object的函数变量的作用域问题/" data-id="cj9jwhbf00000j806oizmbvfo" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" class="article-date">
@@ -83,22 +134,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>直接拿主题镇楼吧：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>输出结果：3 3 3</p>
-<p>一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。</p>
-<p>我自己学习前端的路我觉得是坎坷曲折的，等我有学到小有成绩的一天我再上来总结一下，但是也正是因为这个不同于常人的学习过程让我从另一个角度对这段代码有了更深入的了解。接下来让我细细说说，第一次写自己的理解，不到位的地方还请各位提点指正一下。</p>
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>这本来是一段非常经典的讲闭包的代码，但是我现在看到这段代码第一反应是异步。先不管输出结果如何，如果看到这段代码觉得是i每变化一次，setTimeout方法里的console.log(i)会调用一次的同学，我觉得接下来说的这部分很有必要看一看。</p>
-<p>我们先把代码做个微小的改动：</p>
+        <p>​    直接拿主题镇楼吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​    输出结果：3 3 3</p>
+<p>​    一个月前的我看到上面这段代码的时候还是云里雾里，完全不理解为什么输出结果是这样，而最近不知道为什么好像突然明白了什么。</p>
+<p>​    我自己学习前端的路我觉得是坎坷曲折的，等我有学到小有成绩的一天我再上来总结一下，但是也正是因为这个不同于常人的学习过程让我从另一个角度对这段代码有了更深入的了解。接下来让我细细说说，第一次写自己的理解，不到位的地方还请各位提点指正一下。</p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>​    这本来是一段非常经典的讲闭包的代码，但是我现在看到这段代码第一反应是异步。先不管输出结果如何，如果看到这段代码觉得是i每变化一次，setTimeout方法里的console.log(i)会调用一次的同学，我觉得接下来说的这部分很有必要看一看。</p>
+<p>​    我们先把代码做个微小的改动：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">  console.log(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>首先我们要了解我们写的js代码的执行顺序其实是由事件循环机制驱动的。javascript是单线程的，而单线程中只能有一个事件循环，但是却有多个任务队列，macro-task（宏任务）与micro-task（微任务）。</p>
+<p>​    首先我们要了解我们写的js代码的执行顺序其实是由事件循环机制驱动的。javascript是单线程的，而单线程中只能有一个事件循环，但是却有多个任务队列，macro-task（宏任务）与micro-task（微任务）。</p>
 <ul>
 <li>macro-task主要包括：script(整体代码), setTimeout, setInterval, setImmediate, I/O, UI rendering。（按优先级排序）</li>
 <li>micro-task主要包括: process.nextTick, Promise。（按优先级排序）</li>
 <li>一个任务队列可以根据任务源（即上述的种类）细分成好几个小队列，被调用时小队列中所有同源任务依次执行。</li>
 <li>所有任务队列中的任务要执行，都必须借助执行栈。</li>
 </ul>
-<p>执行顺序是这样的，从javascript的global代码在执行栈中开始执行，若中途读取到macro-task与micro-task中的函数，先将其分别加入相应队列，待执行栈清空后，再依次到micro-task、macro-task取一类任务执行，再检查是否有全局代码，再循环上面操作。</p>
-<p>所以在我们这段代码中具体是这样体现的：</p>
+<p>​    执行顺序是这样的，从javascript的global代码在执行栈中开始执行，若中途读取到macro-task与micro-task中的函数，先将其分别加入相应队列，待执行栈清空后，再依次到micro-task、macro-task取一类任务执行，再检查是否有全局代码，再循环上面操作。</p>
+<p>​    所以在我们这段代码中具体是这样体现的：</p>
 <ol>
 <li><p>全局代码开始执行，for循环进入执行栈中，此时i=0；</p>
 </li>
@@ -125,23 +177,24 @@
 <li><p>再检查一下，发现micro-task为空，过程中没有产生新的全局代码，macro-task也为空，到这里代码执行完毕。</p>
 </li>
 </ol>
-<p>根据上面的执行顺序，我想大家对这段代码的执行顺序应该有了个新的理解，在这里for循环一定是先于setTimeout方法执行的。</p>
-<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>首先要明白javascript没有块级作用域，虽然说作用域中的值是在函数运行过程中确定的，但是作用域是在函数定义的时候就已经确定了。</p>
-<p>比如在我们这个例子中，抛开函数运行过程中i的值变化情况来看，setTimeout方法中的console.log(i)的i，要取哪里的i值？这就涉及到了作用域链的问题。所谓作用域链，就是如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</p>
-<p>当然在我们这个例子中的没有其他变量i的干扰好像一眼就看明白了，但是我觉得先说清楚这一点对接下来说到闭包取值有用。所以接下来我先举个例子让大家感受一下作用域链的作用过程。    </p>
+<p>​    根据上面的执行顺序，我想大家对这段代码的执行顺序应该有了个新的理解，在这里for循环一定是先于setTimeout方法执行的。</p>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>​    首先要明白javascript没有块级作用域，虽然说作用域中的值是在函数运行过程中确定的，但是作用域是在函数定义的时候就已经确定了。</p>
+<p>​    比如在我们这个例子中，抛开函数运行过程中i的值变化情况来看，setTimeout方法中的console.log(i)的i，要取哪里的i值？这就涉及到了作用域链的问题。所谓作用域链，就是如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</p>
+<p>​    当然在我们这个例子中的没有其他变量i的干扰好像一眼就看明白了，但是我觉得先说清楚这一点对接下来说到闭包取值有用。所以接下来我先举个例子让大家感受一下作用域链的作用过程。    </p>
 <p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fiihtmzuykj30e30dxtao.jpg" alt=""></p>
-<p>按照之前说的，<strong>如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</strong>所以上面的图相信大家都能看懂。</p>
+<p>​    按照之前说的，<strong>如果在当前作用域无法获取到变量的值，那就去创建这个函数的作用域中去找，直到找到全局。</strong>所以上面的图相信大家都能看懂。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>现在看上面的代码，setTimeout方法中的console.log(i)。</p>
+<p>​    现在看上面的代码，setTimeout方法中的console.log(i)。</p>
 <ul>
 <li>先在匿名函数中找变量i，发现匿名函数中并没有定义这个变量；</li>
-<li>继续去创建这个匿名函数的地方，在这里也就是for方法中找变量i，发现找到了，所以在最后输出的时候，i的值就是在for方法中i的值，在段代码中体现出最后setTimeout方法中的console.log(i)都是输出3。</li>
-</ul>
+<li><p>继续去创建这个匿名函数的地方，在这里也就是for方法中找变量i，发现找到了，所以在最后输出的时候，i的值就是在for方法中i的值，在段代码中体现出最后setTimeout方法中的console.log(i)都是输出3。</p>
 <p>现在我们大家就了解了为什么setTimeout方法中的console.log(i)都是输出3了。</p>
-<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>啊终于写到闭包了。</p>
-<p>相信看不懂闭包的盆友们，看到开头那段代码，都以为那段代码的初衷都是每当i变化一次，就把它的值打印出来，可是为什么每次都输出3，因为变量i是在别人的作用域中的啊，当setTimeout方法中的console.log(i)开始执行的时候i已经变成3了，并没有在循环的时候把i值传进来，这种情况就是闭包。</p>
-<p>理想情况是，在for循环过程中，setTimeout被放进任务队列之前，把i在0、1、2的时候把值传进来，然后相当于把setTimeout(function(){console.log(1)},0)、setTimeout(function(){console.log(2)},0)、setTimeout(function(){console.log(3)},0)依次放进任务队列中，这样就可以按照我们的预期输出1 2 3了。</p>
-<p>所以，我们已经知道了，要消除闭包的思路就是正确地将参数传进去，所以我们可以利用一下几种方法来消除闭包。</p>
+</li>
+</ul>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>​    啊终于写到闭包了。</p>
+<p>​    相信看不懂闭包的盆友们，看到开头那段代码，都以为那段代码的初衷都是每当i变化一次，就把它的值打印出来，可是为什么每次都输出3，因为变量i是在别人的作用域中的啊，当setTimeout方法中的console.log(i)开始执行的时候i已经变成3了，并没有在循环的时候把i值传进来，这种情况就是闭包。</p>
+<p>​    理想情况是，在for循环过程中，setTimeout被放进任务队列之前，把i在0、1、2的时候把值传进来，然后相当于把setTimeout(function(){console.log(1)},0)、setTimeout(function(){console.log(2)},0)、setTimeout(function(){console.log(3)},0)依次放进任务队列中，这样就可以按照我们的预期输出1 2 3了。</p>
+<p>​    所以，我们已经知道了，要消除闭包的思路就是正确地将参数传进去，所以我们可以利用一下几种方法来消除闭包。</p>
 <ol>
 <li><p>使用自执行函数提供闭包条件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">for (var i = 0; i &lt; 3; i++) &#123;</div><div class="line">	(function(i)&#123;</div><div class="line">        setTimeout(function() &#123;</div><div class="line">        	console.log(i);</div><div class="line">        &#125;, 0);</div><div class="line">	&#125;)(i)  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -159,49 +212,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;use strict&quot;;</div><div class="line">for (let i = 0; i &lt; 3; i++) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">      console.log(i);</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>恩大概就是这样，第一次写blog，以及还不太会用Typora，就是记录一下我当下的认识，等过几个月再回过头来看的时候，说不定我又有新的认识了，到时候再补充。当然，我对这几段代码的了解可能也有不到位的地方，还希望能得到指正。</p>
+<p>​    恩大概就是这样，第一次写blog，以及还不太会用Typora，就是记录一下我当下的认识，等过几个月再回过头来看的时候，说不定我又有新的认识了，到时候再补充。当然，我对这几段代码的了解可能也有不到位的地方，还希望能得到指正。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj6avqilq00026j06ciqfgsz3" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-blog" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/06/hello-blog/" class="article-date">
-  <time datetime="2017-08-06T13:05:19.000Z" itemprop="datePublished">2017-08-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/06/hello-blog/">Hello Blog</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>​    好久没有写过blog了，这一大段时间的学习笔记都随手写进了word里，不知不觉就攒了一大堆了，学习过程中遇到的很多问题也都是在别人的blog里面得到解答，也希望接下来有空的话，回过去再去看自己之前做的笔记，再总结一下把它写上来。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/06/hello-blog/" data-id="cj6avqilg00006j063tvo9fr9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/" data-id="cj9jwap270000bm06yjtwb849" class="article-share-link">Share</a>
       
       
     </footer>
@@ -246,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/06/hello-world/" data-id="cj6avqiln00016j06iryv33kr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/06/hello-world/" data-id="cj9jwpc5000009q06dnzgf137" class="article-share-link">Share</a>
       
       
     </footer>
@@ -273,7 +289,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
     </div>
   </div>
 
@@ -286,11 +302,11 @@
       <ul>
         
           <li>
-            <a href="/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/">从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</a>
+            <a href="/2017/11/03/javascript中object的函数变量的作用域问题/">javascript中object的函数变量的作用域问题</a>
           </li>
         
           <li>
-            <a href="/2017/08/06/hello-blog/">Hello Blog</a>
+            <a href="/2017/08/11/从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包/">从setTimout(fn{},0)这段代码浅谈异步、作用域、闭包</a>
           </li>
         
           <li>
